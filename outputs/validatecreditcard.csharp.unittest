@@ -1,0 +1,15 @@
+
+import unittest
+
+class TestCreditCardValidation(unittest.TestCase):
+    def test_valid_credit_card_number(self):
+        self.assertTrue(IsValidCreditCardNumber("1234567890123456"))
+    
+    def test_invalid_credit_card_number(self):
+        self.assertFalse(IsValidCreditCardNumber("1234567890123457"))
+    
+    def test_credit_card_number_with_float(self):
+        self.assertRaises(ValueError, IsValidCreditCardNumber, "1234567890123456.7")
+
+if __name__ == '__main__':
+    unittest.main()
