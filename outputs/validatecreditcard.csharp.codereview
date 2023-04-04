@@ -1,0 +1,20 @@
+
+## Code Review:
+
+* Good job with the indentation and spacing of the code. This makes the code easier to read and understand.
+
+* You are using a for loop to iterate through the credit card number, which is a good approach.
+
+* You are declaring the variable `sum` outside of the loop, which is a good practice.
+
+* You are using the `alternate` boolean variable to alternate between multiplying and not multiplying the number. This is a good approach.
+
+* You are using modulus to check if the number is greater than 9. This is a good approach.
+
+* You are using the `Substring` method to get the individual numbers from the string. This is a good approach.
+
+* You are using the `Parse` method to convert the string to an int. This is a good approach.
+
+* You are using the modulus operator to check if the sum is divisible by 10. This is a good approach.
+
+Overall, this looks like well-written code. Good job!
