@@ -1,19 +1,14 @@
 
+// Tests
+import static org.junit.Assert.*;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.*;
+import com.microsoft.azure.cognitiveservices.search.imagesearch.models.*;
+import java.util.List;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class SearchImagesTest {
     @Test
-    public void testConstructor() {
-        // Create a client
-        ImageSearchAPI client = ImageSearchManager.authenticate("<your-subscription-key>");
-        assertNotNull(client);
-    }
-
-    @Test
-    public void testImageSearch() {
+    public void testSearchImages() {
         // Set the API endpoint and key
         String endpoint = "https://api.cognitive.microsoft.com/";
         String subscriptionKey = "<your-subscription-key>";
@@ -23,27 +18,7 @@ public class SearchImagesTest {
 
         // Search for images of "Gibson Les Paul Guitars"
         Images imageResults = client.images().search("Gibson Les Paul Guitars").withMarket("en-US").withCount(10).execute().body();
-        assertNotNull(imageResults);
-
-        // Sort the results by price
-        List<ImageObject> sortedResults = imageResults.value().stream()
-                .sorted((i1, i2) -> Double.compare(i1.price().value(), i2.price().value()))
-                .limit(10)
-                .collect(Collectors.toList());
-        assertNotNull(sortedResults);
-    }
-
-    @Test
-    public void testPrintResults() {
-        // Set the API endpoint and key
-        String endpoint = "https://api.cognitive.microsoft.com/";
-        String subscriptionKey = "<your-subscription-key>";
-
-        // Create a client
-        ImageSearchAPI client = ImageSearchManager.authenticate(subscriptionKey).withEndpoint(endpoint);
-
-        // Search for images of "Gibson Les Paul Guitars"
-        Images imageResults = client.images().search("Gibson Les Paul Guitars").withMarket("en-US").withCount(10).execute().body();
+        assertTrue(imageResults.value().size() == 10);
 
         // Sort the results by price
         List<ImageObject> sortedResults = imageResults.value().stream()
@@ -51,11 +26,9 @@ public class SearchImagesTest {
                 .limit(10)
                 .collect(Collectors.toList());
 
-        // Print the URLs of the top 10 results
-        int count = 0;
+        // Check the URLs of the top 10 results
         for (ImageObject result : sortedResults) {
-            assertEquals(result.contentUrl(), sortedResults.get(count).contentUrl());
-            count++;
+            assertNotNull(result.contentUrl());
         }
     }
 }

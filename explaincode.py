@@ -17,7 +17,7 @@ for filename in os.listdir('./sources'):
         # Call the OpenAI API to generate unit tests for the code snippet
         response = openai.Completion.create(
             engine="text-davinci-003",
-            prompt=f"Generate unit tests for this code:\n\n{code_snippet}",
+            prompt=f"Explain in natural language what this code is doing:\n\n{code_snippet}",
             max_tokens=1024,
             n=1,
             stop=None,
@@ -25,7 +25,7 @@ for filename in os.listdir('./sources'):
         )
 
         # Write the generated unit tests to a file
-        output_filename = filename + ".unittest"
+        output_filename = filename + ".explained"
         with open(os.path.join('./outputs', output_filename), 'w') as output_file:
             output_file.write(response.choices[0].text)
-            print(f"Generated unit tests written to {output_filename}")
+            print(f"Code explained here {output_filename}")

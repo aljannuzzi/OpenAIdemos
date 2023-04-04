@@ -1,0 +1,2 @@
+
+This code is creating a Durable Orchestrator that is used to manage a long-running transaction process. It takes in a TransactionItem and uses that to produce four different commands - ValidateTransferCommand, TransferCommand, CancelTransferCommand, and IssueReceiptCommand. It also uses SagaStatePersisters to persist the state of the Saga as either Pending, Success, Cancelled, or Failed. Finally, it uses a DurableOrchestrator to orchestrate the commands and persistence of the SagaState.
