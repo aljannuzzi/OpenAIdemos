@@ -1,7 +1,7 @@
 import os
 import openai
 
-# Get the OpenAI API key from a file
+# Get the OpenAI API key from a file test2
 with open("./inputs/inputs.txt", "r") as f:
     inputs = dict(line.strip().split(":") for line in f)
 openai_api_key = inputs["openai_api_key"]
