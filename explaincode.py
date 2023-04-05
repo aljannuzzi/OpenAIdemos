@@ -14,7 +14,7 @@ for filename in os.listdir('./sources'):
     with open(os.path.join('./sources', filename), 'r') as file:
         code_snippet = file.read()
 
-        # Call the OpenAI API to generate unit tests for the code snippet
+        # Call the OpenAI API to generate unit tests for the code snippet 1234
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=f"Explain in natural language what this code is doing:\n\n{code_snippet}",
