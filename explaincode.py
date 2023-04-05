@@ -6,7 +6,7 @@ with open("./inputs/inputs.txt", "r") as f:
     inputs = dict(line.strip().split(":") for line in f)
 openai_api_key = inputs["openai_api_key"]
 
-# Set up the OpenAI API client
+# Set up the OpenAI API client x
 openai.api_key = openai_api_key
 
 # Define the code snippet to generate unit tests for
