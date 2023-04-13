@@ -1,0 +1,85 @@
+
+// Unit Tests:
+
+// Test 1: 
+// Test the configuration set up
+// Input: organization: "example", apiKey: "12345"
+// Expected Output: A new Configuration object
+
+const testConfig = new Configuration({
+    organization: "example",
+    apiKey: "12345"
+});
+
+if(testConfig.organization === "example" && testConfig.apiKey === "12345") {
+    console.log("Test 1 passed");
+} else {
+    console.log("Test 1 failed");
+}
+
+// Test 2:
+// Test the OpenAI API setup
+// Input: testConfig
+// Expected Output: A new OpenAIApi object
+
+const testOpenAI = new OpenAIApi(testConfig);
+
+if(testOpenAI instanceof OpenAIApi) {
+    console.log("Test 2 passed");
+} else {
+    console.log("Test 2 failed");
+}
+
+// Test 3:
+// Test the 'pull_request.opened' function
+// Input: pull_number: 1234
+// Expected Output: FilesResponse object
+
+const testContext = {
+    payload: {
+        repository: {
+            owner: {
+                login: "example"
+            },
+            name: "test"
+        },
+        pull_request: {
+            number: 1234
+        }
+    },
+    octokit: {
+        pulls: {
+            get: jest.fn().mockReturnValue({
+                data: {
+                    number: 1234
+                }
+            }),
+            listFiles: jest.fn().mockReturnValue({
+                data: [
+                    {
+                        patch: "test"
+                    }
+                ]
+            })
+        },
+        issues: {
+            createComment: jest.fn()
+        }
+    }
+}
+
+module.exports = app => {
+    app.on('pull_request.opened', async context => {
+        const filesResponse = await context.octokit.pulls.listFiles({
+            owner: context.payload.repository.owner.login,
+            repo: context.payload.repository.name,
+            pull_number: context.payload.pull_request.number
+        });
+
+        if(filesResponse.data[0].patch === "test") {
+            console.log("Test 3 passed");
+        } else {
+            console.log("Test 3 failed");
+        }
+    });
+};

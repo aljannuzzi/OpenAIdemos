@@ -1,2 +1,2 @@
 
-This code is using the Microsoft Azure Cognitive Services Search Image API to search for images of "Gibson Les Paul Guitars". It is then sorting the results by price and printing the URLs of the top 10 results.
+This code is searching for images related to "Gibson Les Paul Guitars" and then sorting them by price. It is then printing the URLs of the top 10 results.

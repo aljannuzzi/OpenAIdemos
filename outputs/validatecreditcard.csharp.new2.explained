@@ -1,0 +1,2 @@
+
+This code is checking if a given credit card number is valid. It goes through each digit of the credit card number and adds them together, modifying certain digits based on certain criteria. If the sum of the digits is evenly divisible by 10, the credit card number is valid.

@@ -1,0 +1,2 @@
+
+This code is for a protobot app that obtains the source code from a pull request (PR) and automatically asks for a code review using the OpenAI API. It starts by setting up the configuration for OpenAI, then exports the app so that it can be used. The app then listens for when a PR is opened and obtains the source code for the PR. It then sends this source code to the OpenAI API to ask for a code review and then creates a comment with the response from the OpenAI API.

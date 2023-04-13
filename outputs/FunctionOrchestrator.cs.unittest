@@ -1,14 +1,11 @@
 
-// Unit Tests
-
+//Unit Tests:
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NUnit.Framework;
 using Saga.Common.Commands;
 using Saga.Functions.Factories;
 using Saga.Functions.Services;
@@ -20,56 +17,55 @@ using Saga.Orchestration.Models.Transaction;
 
 namespace Saga.Functions.Tests
 {
-    [TestFixture]
+    [TestClass]
     public class OrchestratorTests
     {
-        private Mock<IDurableOrchestrationContext> _orchestrationContext;
-        private Mock<ILogger> _logger;
-        private TransactionItem _transactionItem;
-        private Dictionary<string, Func<Task<ActivityResult<ProducerResult>>>> _commandProducers;
-        private Dictionary<string, Func<Task<bool>>> _sagaStatePersisters;
-
-        [SetUp]
-        public void Setup()
-        {
-            _orchestrationContext = new Mock<IDurableOrchestrationContext>();
-            _logger = new Mock<ILogger>();
-            _transactionItem = new TransactionItem
-            {
-                Amount = 20,
-                FromAccountId = "senderId",
-                ToAccountId = "receiverId"
-            };
-            _commandProducers = new Dictionary<string, Func<Task<ActivityResult<ProducerResult>>>>
-            {
-                [nameof(ValidateTransferCommand)] = () => ActivityFactory.ProduceValidateTransferCommandAsync(_transactionItem, _orchestrationContext.Object, _logger.Object),
-                [nameof(TransferCommand)] = () => ActivityFactory.ProduceTransferCommandAsync(_transactionItem, _orchestrationContext.Object, _logger.Object),
-                [nameof(CancelTransferCommand)] = () => ActivityFactory.ProduceCancelTransferCommandAsync(_transactionItem, _orchestrationContext.Object, _logger.Object),
-                [nameof(IssueReceiptCommand)] = () => ActivityFactory.ProduceIssueReceiptCommandAsync(_transactionItem, _orchestrationContext.Object, _logger.Object)
-            };
-
-            _sagaStatePersisters = new Dictionary<string, Func<Task<bool>>>
-            {
-                [nameof(SagaState.Pending)] = () => SagaFactory.PersistSagaStateAsync(_transactionItem, SagaState.Pending, _orchestrationContext.Object, _logger.Object),
-                [nameof(SagaState.Success)] = () => SagaFactory.PersistSagaStateAsync(_transactionItem, SagaState.Success, _orchestrationContext.Object, _logger.Object),
-                [nameof(SagaState.Cancelled)] = () => SagaFactory.PersistSagaStateAsync(_transactionItem, SagaState.Cancelled, _orchestrationContext.Object, _logger.Object),
-                [nameof(SagaState.Fail)] = () => SagaFactory.PersistSagaStateAsync(_transactionItem, SagaState.Fail, _orchestrationContext.Object, _logger.Object),
-            };
-
-            _orchestrationContext.Setup(x => x.GetInput<TransactionItem>()).Returns(_transactionItem);
-        }
-
-        [Test]
-        public async Task SagaOrchestrator_Success()
+        [TestMethod]
+        public void SagaOrchestrator_ReturnsSuccess_WhenAllCommandsSucceed()
         {
             // Arrange
-            var sagaState = SagaState.Success;
-            var durableOrchestrator = new DurableOrchestrator(_commandProducers, _sagaStatePersisters);
+            var contextMock = new Mock<IDurableOrchestrationContext>();
+            var logMock = new Mock<ILogger>();
+            var item = new TransactionItem();
+            var commandProducers = new Dictionary<string, Func<Task<ActivityResult<ProducerResult>>>>
+            {
+                [nameof(ValidateTransferCommand)] = () => ActivityFactory.ProduceValidateTransferCommandAsync(item, contextMock.Object, logMock.Object)
+            };
+            var sagaStatePersisters = new Dictionary<string, Func<Task<bool>>>
+            {
+                [nameof(SagaState.Success)] = () => SagaFactory.PersistSagaStateAsync(item, SagaState.Success, contextMock.Object, logMock.Object)
+            };
+            contextMock.Setup(x => x.GetInput<TransactionItem>()).Returns(item);
 
             // Act
-            await Orchestrator.SagaOrchestrator(_orchestrationContext.Object, _logger.Object);
+            var result = Orchestrator.SagaOrchestrator(contextMock.Object, logMock.Object).Result;
 
             // Assert
-            _orchestrationContext.Verify(x => x.GetInput<TransactionItem>(), Times.Once);
-            _logger.Verify(x => x.LogInformation($@"Saga state = {nameof(sagaState)} [{_orchestrationContext.Object.InstanceId}]"), Times.Once);
-            Assert.AreEqual(sagaState
+            Assert.AreEqual(SagaState.Success, result);
+        }
+
+        [TestMethod]
+        public void SagaOrchestrator_ThrowsArgumentException_WhenCommandsFail()
+        {
+            // Arrange
+            var contextMock = new Mock<IDurableOrchestrationContext>();
+            var logMock = new Mock<ILogger>();
+            var item = new TransactionItem();
+            var commandProducers = new Dictionary<string, Func<Task<ActivityResult<ProducerResult>>>>
+            {
+                [nameof(ValidateTransferCommand)] = () => ActivityFactory.ProduceValidateTransferCommandAsync(item, contextMock.Object, logMock.Object)
+            };
+            var sagaStatePersisters = new Dictionary<string, Func<Task<bool>>>
+            {
+                [nameof(SagaState.Fail)] = () => SagaFactory.PersistSagaStateAsync(item, SagaState.Fail, contextMock.Object, logMock.Object)
+            };
+            contextMock.Setup(x => x.GetInput<TransactionItem>()).Returns(item);
+
+            // Act
+            void TestCode() => Orchestrator.SagaOrchestrator(contextMock.Object, logMock.Object).Wait();
+
+            // Assert
+            Assert.ThrowsException<ArgumentException>(TestCode);
+        }
+    }
+}

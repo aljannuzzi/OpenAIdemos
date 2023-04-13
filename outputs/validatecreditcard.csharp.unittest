@@ -1,53 +1,42 @@
 
-//Unit Tests
-[Test]
-public void IsValidCreditCardNumber_EmptyString_ReturnsFalse()
+//Test 1:
+[TestMethod]
+public void IsValidCreditCardNumber_ValidInput_ReturnsTrue()
 {
-    //Arrange
+    // Arrange
+    string creditCardNumber = "1234567890123456";
+    
+    // Act
+    bool result = IsValidCreditCardNumber(creditCardNumber);
+    
+    // Assert
+    Assert.IsTrue(result);
+}
+
+//Test 2:
+[TestMethod]
+public void IsValidCreditCardNumber_InvalidInput_ReturnsFalse()
+{
+    // Arrange
+    string creditCardNumber = "1234567890123457";
+    
+    // Act
+    bool result = IsValidCreditCardNumber(creditCardNumber);
+    
+    // Assert
+    Assert.IsFalse(result);
+}
+
+//Test 3:
+[TestMethod]
+public void IsValidCreditCardNumber_EmptyInput_ReturnsFalse()
+{
+    // Arrange
     string creditCardNumber = "";
     
-    //Act
-    bool actual = IsValidCreditCardNumber(creditCardNumber);
+    // Act
+    bool result = IsValidCreditCardNumber(creditCardNumber);
     
-    //Assert
-    Assert.IsFalse(actual);
-}
-
-[Test]
-public void IsValidCreditCardNumber_SingleDigit_ReturnsFalse()
-{
-    //Arrange
-    string creditCardNumber = "1";
-    
-    //Act
-    bool actual = IsValidCreditCardNumber(creditCardNumber);
-    
-    //Assert
-    Assert.IsFalse(actual);
-}
-
-[Test]
-public void IsValidCreditCardNumber_ValidNumber_ReturnsTrue()
-{
-    //Arrange
-    string creditCardNumber = "1234567890";
-    
-    //Act
-    bool actual = IsValidCreditCardNumber(creditCardNumber);
-    
-    //Assert
-    Assert.IsTrue(actual);
-}
-
-[Test]
-public void IsValidCreditCardNumber_InvalidNumber_ReturnsFalse()
-{
-    //Arrange
-    string creditCardNumber = "1234567891";
-    
-    //Act
-    bool actual = IsValidCreditCardNumber(creditCardNumber);
-    
-    //Assert
-    Assert.IsFalse(actual);
+    // Assert
+    Assert.IsFalse(result);
 }

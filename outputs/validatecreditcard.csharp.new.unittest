@@ -1,0 +1,28 @@
+
+// Test 1:
+[Test]
+public void IsValidCreditCardNumber_ValidInput_ReturnsTrue()
+{
+    Assert.IsTrue(IsValidCreditCardNumber("4111111111111111"));
+}
+
+// Test 2:
+[Test]
+public void IsValidCreditCardNumber_InvalidInput_ReturnsFalse()
+{
+    Assert.IsFalse(IsValidCreditCardNumber("4111111111111112"));
+}
+
+// Test 3:
+[Test]
+public void IsValidCreditCardNumber_EmptyInput_ReturnsFalse()
+{
+    Assert.IsFalse(IsValidCreditCardNumber(""));
+}
+
+// Test 4:
+[Test]
+public void IsValidCreditCardNumber_NullInput_ReturnsFalse()
+{
+    Assert.IsFalse(IsValidCreditCardNumber(null));
+}

@@ -1,2 +1,2 @@
 
-This code is checking to see if a given credit card number is valid. It goes through each digit in the credit card number, multiplies every other one by 2, and then adds them all together. It then checks to see if the final sum is divisible by 10 and returns true if it is.
+This code is checking if a given credit card number is valid. It does this by going through each digit one-by-one and performing a mathematical operation on them. If the total sum of all the operations is divisible by ten, the credit card number is valid.

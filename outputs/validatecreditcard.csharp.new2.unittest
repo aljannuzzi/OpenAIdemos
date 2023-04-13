@@ -1,0 +1,21 @@
+
+// Test 1: 
+// Input: "1234567890123456"
+// Expected Output: false
+
+bool result = IsValidCreditCardNumber("1234567890123456");
+Assert.AreEqual(false, result);
+
+// Test 2: 
+// Input: "49927398716"
+// Expected Output: true
+
+bool result = IsValidCreditCardNumber("49927398716");
+Assert.AreEqual(true, result);
+
+// Test 3: 
+// Input: "12345"
+// Expected Output: false
+
+bool result = IsValidCreditCardNumber("12345");
+Assert.AreEqual(false, result);

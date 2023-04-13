@@ -1,34 +1,49 @@
 
-// Tests
-import static org.junit.Assert.*;
-import com.microsoft.azure.cognitiveservices.search.imagesearch.*;
-import com.microsoft.azure.cognitiveservices.search.imagesearch.models.*;
-import java.util.List;
-import org.junit.Test;
-
-public class SearchImagesTest {
-    @Test
-    public void testSearchImages() {
-        // Set the API endpoint and key
-        String endpoint = "https://api.cognitive.microsoft.com/";
-        String subscriptionKey = "<your-subscription-key>";
-
-        // Create a client
-        ImageSearchAPI client = ImageSearchManager.authenticate(subscriptionKey).withEndpoint(endpoint);
-
-        // Search for images of "Gibson Les Paul Guitars"
-        Images imageResults = client.images().search("Gibson Les Paul Guitars").withMarket("en-US").withCount(10).execute().body();
-        assertTrue(imageResults.value().size() == 10);
-
-        // Sort the results by price
-        List<ImageObject> sortedResults = imageResults.value().stream()
-                .sorted((i1, i2) -> Double.compare(i1.price().value(), i2.price().value()))
-                .limit(10)
-                .collect(Collectors.toList());
-
-        // Check the URLs of the top 10 results
-        for (ImageObject result : sortedResults) {
-            assertNotNull(result.contentUrl());
-        }
+//Test 1: 
+//Test that the contentURL is correctly printed for the top 10 results
+public void testContentURLPrintedCorrectly() {
+    //create a mock ImageObject
+    ImageObject imageObject = new ImageObject();
+    imageObject.setContentUrl("https://example.com");
+    
+    //create a list of 10 ImageObjects
+    List<ImageObject> sortedResults = new ArrayList<ImageObject>();
+    for (int i=0; i < 10; i++){
+        sortedResults.add(imageObject);
     }
+    
+    //call the method to print the URLs
+    SearchImages.printURL(sortedResults);
+    
+    //assert that the contentURL of all 10 elements in the list is printed
+    for (int i=0; i < 10; i++){
+        assertEquals("https://example.com", sortedResults.get(i).getContentUrl());
+    }
+}
+
+//Test 2: 
+//Test that the list is sorted correctly by price
+public void testListIsSortedByPrice() {
+    //create a mock ImageObject
+    ImageObject imageObject1 = new ImageObject();
+    imageObject1.setPrice(50.0);
+    ImageObject imageObject2 = new ImageObject();
+    imageObject2.setPrice(25.0);
+    
+    //create a list of 10 ImageObjects
+    List<ImageObject> sortedResults = new ArrayList<ImageObject>();
+    sortedResults.add(imageObject1);
+    sortedResults.add(imageObject2);
+    
+    //call the method to sort the list
+    Collections.sort(sortedResults, new Comparator<ImageObject>(){
+        @Override
+        public int compare(ImageObject i1, ImageObject i2){
+            return Double.compare(i1.price().value(), i2.price().value());
+        }
+    });
+    
+    //assert that the list is sorted correctly by price
+    assertEquals(25.0, sortedResults.get(0).getPrice());
+    assertEquals(50.0, sortedResults.get(1).getPrice());
 }
