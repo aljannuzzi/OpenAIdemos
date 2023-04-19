@@ -7,7 +7,7 @@ def read_api_key(file_path):
     with open(file_path, "r") as file:
         return file.read().strip()
 
-api_key_file_path = "api_key.txt"  # Replace with the path to your API key text file
+api_key_file_path = "api_key.txt"  # Replace with the path to your API key text file here
 chatgpt_api_key = read_api_key(api_key_file_path)
 
 plugin_server_base_url = "http://<URL>:3333"  # Replace with your plugin server's base URL
