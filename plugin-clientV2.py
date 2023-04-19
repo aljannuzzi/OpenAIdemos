@@ -12,7 +12,7 @@ def read_api_key(file_path):
 api_key_file_path = "api_key.txt"  # Replace with the path to your API key text file
 chatgpt_api_key = read_api_key(api_key_file_path)
 
-plugin_server_base_url = "http://20.55.91.19:3333"  # Replace with your plugin server's base URL
+plugin_server_base_url = "http://IP:3333"  # Replace with your plugin server's base URL
 
 headers = {
     "Content-Type": "application/json",
@@ -46,7 +46,7 @@ def chatgpt_query(prompt):
 
 def plugin_query(plugin_query_text):
     try:
-        url = "http://20.55.91.19:3333/query"
+        url = "http://IP:3333/query"
         payload = {
             "queries": [
                 {
