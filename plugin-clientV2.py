@@ -85,6 +85,7 @@ def upsert_conversation(conversation_id, plugin_query_text, chatgpt_response):
                 }
             ]
         }
+        
 
         response = requests.post(url, json=payload)
         response.raise_for_status()
