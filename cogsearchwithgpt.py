@@ -13,14 +13,14 @@ api_key_file_path = "api_key.txt.azure"  # Replace with the path to your API key
 chatgpt_api_key = read_api_key(api_key_file_path)
 azure_search_api_key = read_api_key("azure_search_key.txt")  # Replace with the path to your Azure Search API key text file
 
-azure_search_service_name = "janncogsearch"  # Replace with your Azure Cognitive Search service name
+azure_search_service_name = "<name>"  # Replace with your Azure Cognitive Search service name
 
 headers = {
     "Content-Type": "application/json",
     "api-key": chatgpt_api_key,
 }
 
-chatgpt_url = "https://janndemosc.openai.azure.com/openai/deployments/jann-gpt4/chat/completions?api-version=2023-03-15-preview"
+chatgpt_url = "https://<URL>"
 
 def chatgpt_query(prompt):
     payload = {
