@@ -20,7 +20,7 @@ headers = {
     "api-key": chatgpt_api_key,
 }
 
-chatgpt_url = "https://janndemosc.openai.azure.com/openai/deployments/jann-gpt4/chat/completions?api-version=2023-03-15-preview"
+chatgpt_url = "https://<URL>"
 
 def chatgpt_query(prompt):
     payload = {
